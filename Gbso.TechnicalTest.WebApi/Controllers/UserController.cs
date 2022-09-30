@@ -1,4 +1,5 @@
 ﻿using Gbso.TechnicalTest.Cl.BllService;
+using Gbso.TechnicalTest.Cl.Exception;
 using Gbso.TechnicalTest.Dto;
 using Gbso.TechnicalTest.Model;
 using Microsoft.AspNetCore.Mvc;
@@ -34,9 +35,16 @@ namespace Gbso.TechnicalTest.WebApi.Controllers
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public IActionResult Get()
 		{
-			var users = userService.List();
-			var userResult = Mapper.Map<IEnumerable<User>, IEnumerable<UserDto>>(users);
-			return new OkObjectResult(userResult);
+			try
+			{
+				var users = userService.List();
+				var userResult = Mapper.Map<IEnumerable<User>, IEnumerable<UserDto>>(users);
+				return new OkObjectResult(userResult);
+			}
+			catch (ValidateException ex)
+			{
+				return new NotFoundObjectResult(ex.Message);
+			}
 		}
 
 		[HttpGet("{id}")]
@@ -44,9 +52,16 @@ namespace Gbso.TechnicalTest.WebApi.Controllers
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public IActionResult ById(int id)
 		{
-			var user = userService.GeyById(id);
-			var userResult = Mapper.Map<User, UserDto>(user);
-			return new OkObjectResult(userResult);
+			try
+			{
+				var user = userService.GeyById(id);
+				var userResult = Mapper.Map<User, UserDto>(user);
+				return new OkObjectResult(userResult);
+			}
+			catch (ValidateException ex)
+			{
+				return new NotFoundObjectResult(ex.Message);
+			}
 		}
 
 		[HttpPut]

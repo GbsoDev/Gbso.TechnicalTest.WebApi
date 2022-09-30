@@ -11,6 +11,8 @@ namespace Gbso.TechnicalTest.Cl.Exception
 {
 	public class ValidateException : System.Exception
 	{
+		public ValidationResult[] Validations { get; } = new ValidationResult[0];
+
 		public ValidateException()
 		{
 		}
@@ -25,6 +27,7 @@ namespace Gbso.TechnicalTest.Cl.Exception
 
 		public ValidateException(string? message, params ValidationResult[] validations) : base(message)
 		{
+			Validations = validations;
 		}
 
 		protected ValidateException(SerializationInfo info, StreamingContext context) : base(info, context)
