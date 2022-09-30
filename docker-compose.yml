@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+    gbso.technicaltest.database:
+        image: postgres
+        restart: always
+    gbso.technicaltest.webapi:
+        image: ${DOCKER_REGISTRY-}gbsotechnicaltestwebapi
+        build:
+            context: .
+            dockerfile: Gbso.TechnicalTest.WebApi/Dockerfile
+        depends_on:
+            - gbso.technicaltest.database
+    pgadmin:
+        image: dpage/pgadmin4
+        depends_on: 
+            - gbso.technicaltest.database

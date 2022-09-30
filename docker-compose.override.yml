@@ -1,0 +1,32 @@
+version: '3.4'
+
+services:
+    gbso.technicaltest.database:
+        container_name: "gbso.technicaltest.database"
+        environment:
+            - DATABASE_HOST=127.0.0.1
+            - POSTGRES_USER=admin
+            - POSTGRES_PASSWORD=admin
+            - POSTGRES_DB=gbso.technicaltest.database
+        ports:
+            - 5432:5432
+        expose:
+            - 5432
+    gbso.technicaltest.webapi:
+        container_name: "gbso.technicaltest.webapi"
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=https://+:443;http://+:80
+        ports:
+            - "80"
+            - "443"
+        volumes:
+            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    pgadmin:
+        container_name: "gbso.technicaltest.database.pgadmin4"
+        environment: 
+            PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+            PGADMIN_DEFAULT_PASSWORD: "admin"
+        ports:
+            - 8080:80
